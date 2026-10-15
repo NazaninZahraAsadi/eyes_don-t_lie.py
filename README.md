@@ -1,4 +1,4 @@
-# eyes_don-t_lie.py
+# eyes_don-t_lie
 : A creative Python animation project using Turtle Graphics, mathematical curves, HSV color transitions, and smooth animations.
 
 ## Features
