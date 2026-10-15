@@ -1,0 +1,94 @@
+import turtle
+import math
+import time
+
+def draw_wavy_circle_with_animation():
+    window = turtle.Screen()
+    window.bgcolor("black")
+    window.title("Rainbow Wavy Circle 🌈")
+    window.tracer(0)
+
+    circle = turtle.Turtle()
+    circle.shape("turtle")
+    circle.color("white", "grey")
+    circle.speed(0)
+    circle.pensize(2)
+
+    radius = 200
+    steps = 360
+    wave_amp = 25
+    wave_freq = 8
+
+    rainbow = (
+        "red", "orange", "yellow", "green",
+        "blue", "indigo", "violet",
+    )
+
+    circle.penup()
+    circle.goto(radius, 0)
+    circle.pendown()
+    circle.setheading(90)
+
+    for i in range(steps + 1):
+        angle = math.radians(i)
+        r = radius + wave_amp * math.sin(wave_freq * angle)
+        x = r * math.cos(angle)
+        y = r * math.sin(angle)
+
+        color_index = int((i / steps) * len(rainbow)) % len(rainbow)
+        circle.pencolor(rainbow[color_index])
+
+        circle.goto(x, y)
+
+        window.update()
+        time.sleep(0.008)  
+
+    window.update()
+
+    circle.penup()
+    circle.pencolor("white")
+
+    start_x, start_y = circle.xcor(), circle.ycor()
+    end_x, end_y = 0, 0
+    move_steps = 60
+
+    for s in range(move_steps + 1):
+        t = s / move_steps
+        # easing نرم (smoothstep)
+        t_eased = t * t * (3 - 2 * t)
+
+        x = start_x + (end_x - start_x) * t_eased
+        y = start_y + (end_y - start_y) * t_eased
+        circle.goto(x, y)
+
+        circle.setheading(circle.heading() + 6)
+
+        window.update()
+        time.sleep(0.015)
+
+    message = "Eyes don't lie!"
+    circle.goto(0, 18) 
+    circle.color("white")
+
+    typed = ""
+    for ch in message:
+        typed += ch
+        circle.clear() 
+        circle.write(typed, align="center", font=("Arial", 16, "bold"))
+        window.update()
+        time.sleep(0.09)
+
+    for _ in range(2):
+        circle.clear()
+        window.update()
+        time.sleep(0.15)
+        circle.write(message, align="center", font=("Arial", 16, "bold"))
+        window.update()
+        
+    circle.goto(0, 0)
+    window.update()
+
+    window.exitonclick()
+
+
+draw_wavy_circle_with_animation()
