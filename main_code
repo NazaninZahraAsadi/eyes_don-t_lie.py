@@ -1,0 +1,162 @@
+import turtle
+import math
+import time
+
+def draw_wavy_circle_with_animation():
+window = turtle.Screen()
+window.bgcolor("black")
+window.title("Rainbow Wavy Circle 🌈")
+window.tracer(0)
+
+circle = turtle.Turtle()  
+circle.shape("turtle")  
+circle.color("white", "grey")  
+circle.speed(0)  
+circle.pensize(2)  
+
+radius = 200  
+steps = 360  
+wave_amp = 25  
+wave_freq = 8  
+
+(HSV)  
+import colorsys  
+
+def rainbow_color(t):   
+    hue = (t % 1.0) * 0.83  
+    r, g, b = colorsys.hsv_to_rgb(hue, 1.0, 1.0)  
+    return (r, g, b)  
+
+circle.penup()  
+circle.goto(radius, 0)  
+circle.pendown()  
+circle.setheading(90)  
+
+for i in range(steps + 1):  
+    angle = math.radians(i)  
+    r = radius + wave_amp * math.sin(wave_freq * angle)  
+    x = r * math.cos(angle)  
+    y = r * math.sin(angle)  
+
+    t = i / steps  
+    circle.pencolor(rainbow_color(t))  
+
+    circle.goto(x, y)  
+    window.update()  
+    time.sleep(0.008)  
+
+window.update()  
+ 
+circle.penup()  
+circle.pencolor("white")  
+
+start_x, start_y = circle.xcor(), circle.ycor()  
+move_steps = 60  
+
+for s in range(move_steps + 1):  
+    t = s / move_steps  
+    t_eased = t * t * (3 - 2 * t)  
+
+    x = start_x + (0 - start_x) * t_eased  
+    y = start_y + (0 - start_y) * t_eased  
+    circle.goto(x, y)  
+    circle.setheading(circle.heading() + 6)  
+
+    window.update()  
+    time.sleep(0.015)  
+
+spin_duration = 1.2     
+spin_frames = 120  
+start_stamp = circle.stamp()  
+
+for f in range(spin_frames + 1):  
+    p = f / spin_frames  # 0 → 1  
+
+    circle.setheading(circle.heading() + 40)  
+
+    scale = 1.0 - p  
+    try:  
+        circle.shapesize(max(scale, 0.01))  
+    except Exception:  
+        pass  
+ 
+    v = max(0.0, 1.0 - p)  
+    circle.pencolor((v, v, v))  
+    circle.fillcolor((v * 0.5, v * 0.5, v * 0.5))  
+
+    window.update()  
+    time.sleep(spin_duration / spin_frames)  
+
+circle.hideturtle()  
+circle.shapesize(1)  
+window.update()  
+
+message = "Eyes don't lie!"  
+
+writer = turtle.Turtle()  
+writer.hideturtle()  
+writer.penup()  
+writer.goto(0, 18)  
+writer.color("white")  
+
+typed = ""  
+for ch in message:  
+    typed += ch  
+    writer.clear()  
+    writer.write(typed, align="center", font=("Arial", 16, "bold"))  
+    window.update()  
+    time.sleep(0.09)  
+  
+wave = turtle.Turtle()  
+wave.hideturtle()  
+wave.speed(0)  
+wave.pensize(2)  
+
+def draw_pulsing_wave(phase, scale):  
+    wave.clear()  
+    wave.penup()  
+
+    wave_radius = radius * scale  
+    wave_steps = 180  
+
+    for i in range(wave_steps + 1):  
+        angle = math.radians(i * 2)  # 0 → 360  
+        rr = wave_radius + wave_amp * scale * math.sin(wave_freq * angle + phase)  
+        x = rr * math.cos(angle)  
+        y = rr * math.sin(angle)  
+
+        t = i / wave_steps  
+        wave.pencolor(rainbow_color(t + phase * 0.1))  
+
+        if i == 0:  
+            wave.goto(x, y)  
+            wave.pendown()  
+        else:  
+            wave.goto(x, y)  
+
+pulse_cycles = 4  
+pulse_frames = 50  
+
+for c in range(pulse_cycles):    
+    for f in range(pulse_frames + 1):  
+        p = f / pulse_frames  
+        scale = 0.55 + 0.15 * p   # 0.55 → 0.70  
+        phase = c * math.pi  
+        draw_pulsing_wave(phase, scale)  
+        window.update()  
+        time.sleep(0.01)  
+
+    for f in range(pulse_frames + 1):  
+        p = f / pulse_frames  
+        scale = 0.70 - 0.15 * p   # 0.70 → 0.55  
+        phase = c * math.pi + math.pi  
+        draw_pulsing_wave(phase, scale)  
+        window.update()  
+        time.sleep(0.01)  
+ 
+draw_pulsing_wave(0, 0.6)  
+window.update()  
+
+window.exitonclick()
+
+draw_wavy_circle_with_animation()
